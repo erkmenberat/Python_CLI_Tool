@@ -30,7 +30,7 @@ def arg(x):
     elif(x == args[2]):
         print("list")
     elif(x == args[3]):
-        print("help")
+        hilfe()
     else:
         print("Hepinizin Amina Koymak lazim ama neyse.")
         return
@@ -50,6 +50,12 @@ def ls():
 
 def hilfe():
     #Just listin the Usage forms. 
+    print("Usage Main.Py: [add, delete, list, help]\n\n")
+    print("These are the Commands that you can use: \n\n")
+    print("     add     Adds Todos that you can Check here throug 'list'\n")
+    print("     list     Lists all the Todos that you have written. \n")
+    print("     delete <todo name>     Deletes the Selected Todo.\n")
+    print("     help     Walkthrough for my very very Complex Commands.\n")
     return
 
 
