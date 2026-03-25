@@ -1,11 +1,10 @@
 import sys
 from pathlib import Path
-import os
 import json 
 
 argv = sys.argv 
 argc = len(argv)
-args = ["add", "delete", "list", "help"]
+args = ["add", "rm", "ls", "help"]
 #status = False commented out because if a Todo is finished the user should delete it.
 
 def main():
@@ -26,10 +25,11 @@ def main():
 
 def arg(x): # must be changed but works fine rn
     if(x == args[0]):
-        userinput = input("Todo den Sie eingeben Wollen: ")
+        userinput = input("Todo you wanna add: ")
         add(userinput)
     elif(x == args[1]):
-        print("del")
+        userinput = input("Todo you wanna remove: ") # shoud have a fallback if there is no todo that name exist at all
+        rm(userinput)
     elif(x == args[2]):
         ls()
     elif(x == args[3]):
@@ -73,18 +73,41 @@ def ls(): # List Function DONE!
     
     return
 
-def delete():
+def rm(input):
     # Check how to edit a JSON file using pyhton
     # use clear()
+    index = 0
+
+    jf = Path.home() / "todos.json" #jf == json file
+    
+    if not jf.exists(): # check if the file is existing
+        jf.write_text("[]") # if not create a empty file.
+        print("No Database found! --> Created todo.json") #alerting
+    
+    with open(jf, "r") as f:  # using "with" for safety it is closing the file automaticly after opening. 
+        inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
+
+    for i in inhalt: ## Löschen funktuniert nicht. Es geht nicht alle values durch. Compilen tun es. 
+        for val in i.values():
+            index += 1
+            if(val == input):
+                inhalt.remove(index)
+                print("Succesfully Removed Todo")
+                return
+            else:
+                if(index >= len(inhalt)):    
+                    print("There is no Todo like this!?")
+                    return
+
     return
 
 def hilfe(): # help function DONE!
     #Just listin the Usage forms. 
     print("Usage Main.Py: [add, delete, list, help]\n\n")
     print("These are the Commands that you can use: \n\n")
-    print("     add     Adds Todos that you can Check here throug 'list'\n")
-    print("     list     Lists all the Todos that you have written. \n")
-    print("     delete <todo name>     Deletes the Selected Todo.\n")
+    print("     add <todo name>    Adds Todos that you can Check here throug 'list'\n")
+    print("     ls     Lists all the Todos that you have written. \n")
+    print("     rm <todo name>     Deletes the Selected Todo.\n")
     print("     help     Walkthrough for my very very Complex Commands.\n")
     return
 
