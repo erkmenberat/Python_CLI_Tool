@@ -6,7 +6,7 @@ import json
 argv = sys.argv 
 argc = len(argv)
 args = ["add", "delete", "list", "help"]
-status = False
+#status = False commented out because if a Todo is finished the user should delete it.
 
 def main():
     count = 0
@@ -24,23 +24,21 @@ def main():
         print("Wrong input: Usage --> arg arg : add sex")
         return
 
-
-def arg(x):
+def arg(x): # must be changed but works fine rn
     if(x == args[0]):
         userinput = input("Todo den Sie eingeben Wollen: ")
         add(userinput)
     elif(x == args[1]):
         print("del")
     elif(x == args[2]):
-        print("list")
+        ls()
     elif(x == args[3]):
         hilfe()
     else:
         print("Hepinizin Amina Koymak lazim ama neyse.")
         return
 
-
-def add(input):# add todo into a json data check if the json file is existin or not.
+def add(input):# add function DONE!
 
     jf = Path.home() / "todos.json" #jf == json file
     
@@ -50,22 +48,37 @@ def add(input):# add todo into a json data check if the json file is existin or 
     with open(jf, "r") as f:  # using "with" for safety it is closing the file automaticly after opening. 
         inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
 
-    inhalt.append({"ToDo": input, "status erledigt?": status}) # Add the Infos into the JSON file. 
+    inhalt.append({"ToDo": input}) # Add the Infos into the JSON file. 
 
     with open(jf, "w") as f: 
         json.dump(inhalt, f) # its opening the json file and writing the changes into the file. 
 
     return
 
+def ls(): # List Function DONE!
+    # Check how to Print a Json file on Terminal in Python? 
+
+    jf = Path.home() / "todos.json" #jf == json file
+    
+    if not jf.exists(): # check if the file is existing
+        jf.write_text("[]") # if not create a empty file.
+        print("No Database found! --> Created todo.json") #alerting
+    
+    with open(jf, "r") as f:  # using "with" for safety it is closing the file automaticly after opening. 
+        inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
+
+    for i in inhalt: # inhalt [´{example1}, {example2}] i = {example1} --> {example2}.
+        for x, y in i.items(): # gets the key and the values thats .items() :) 
+            print(f"{x}: {y}") # prints out only the key and value ;) 
+    
+    return
+
 def delete():
     # Check how to edit a JSON file using pyhton
+    # use clear()
     return
 
-def ls():
-    # Check how to Print a Json file on Terminal in Python? 
-    return
-
-def hilfe():
+def hilfe(): # help function DONE!
     #Just listin the Usage forms. 
     print("Usage Main.Py: [add, delete, list, help]\n\n")
     print("These are the Commands that you can use: \n\n")
@@ -75,17 +88,4 @@ def hilfe():
     print("     help     Walkthrough for my very very Complex Commands.\n")
     return
 
-
 main()
-
-
-
-
-    # if(args[num] == "add"):
-    #     add()
-    # elif(args[num] == "delete"):
-    #     delete()
-    # elif(args[num] == "list"):
-    #     ls()
-    # elif(args[num] == "help"):
-    #     hilfe()
