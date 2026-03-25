@@ -1,13 +1,16 @@
 import sys
 from pathlib import Path
+import os
+import json 
 
 argv = sys.argv 
 argc = len(argv)
 args = ["add", "delete", "list", "help"]
+status = False
 
 def main():
     count = 0
-    if(argc < 3):
+    if(argc > 1 & argc < 3):
         for i in args: 
             if(argv[1] == i):
                 arg(i)
@@ -24,7 +27,8 @@ def main():
 
 def arg(x):
     if(x == args[0]):
-        print("i am adder.")
+        userinput = input("Todo den Sie eingeben Wollen: ")
+        add(userinput)
     elif(x == args[1]):
         print("del")
     elif(x == args[2]):
@@ -36,8 +40,21 @@ def arg(x):
         return
 
 
-def add():
-    # add todo into a json data check if the json file is existin or not. --> Learn how to do that Berat
+def add(input):# add todo into a json data check if the json file is existin or not.
+
+    jf = Path.home() / "todos.json" #jf == json file
+    
+    if not jf.exists(): # check if the file is existing
+        jf.write_text("[]") # if not create a empty file. 
+
+    with open(jf, "r") as f:  # using "with" for safety it is closing the file automaticly after opening. 
+        inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
+
+    inhalt.append({"ToDo": input, "status erledigt?": status}) # Add the Infos into the JSON file. 
+
+    with open(jf, "w") as f: 
+        json.dump(inhalt, f) # its opening the json file and writing the changes into the file. 
+
     return
 
 def delete():
