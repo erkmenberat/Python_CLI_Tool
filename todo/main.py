@@ -4,7 +4,7 @@ import json
 
 argv = sys.argv 
 argc = len(argv)
-args = ["add", "rm", "ls", "help"]
+args = ["add {argv[2]}", "rm {argv[2]}", "ls", "help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
 #status = False commented out because if a Todo is finished the user should delete it.
 
 def main():
@@ -25,10 +25,10 @@ def main():
 
 def arg(x): # must be changed but works fine rn
     if(x == args[0]):
-        userinput = input("Todo you wanna add: ")
+        userinput = argv[2]
         add(userinput)
     elif(x == args[1]):
-        userinput = input("Todo you wanna remove: ") # shoud have a fallback if there is no todo that name exist at all
+        userinput = argv[2] # shoud have a fallback if there is no todo that name exist at all
         rm(userinput)
     elif(x == args[2]):
         ls()
