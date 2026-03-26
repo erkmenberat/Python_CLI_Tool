@@ -20,7 +20,7 @@ def main():
                     print("Undefinded arg: Usage: main.py help")
                     return
     else:
-        print("Wrong input: Usage --> arg arg : add sex")
+        hilfe()
         return
 
 def arg(x): # must be changed but works fine rn
@@ -73,10 +73,10 @@ def ls(): # List Function DONE!
     
     return
 
-def rm(input):
+def rm(input): # rm command DONE!
     # Check how to edit a JSON file using pyhton
     # use clear()
-    index = 0
+    index = 0 # for the loop index
 
     jf = Path.home() / "todos.json" #jf == json file
     
@@ -87,19 +87,19 @@ def rm(input):
     with open(jf, "r") as f:  # using "with" for safety it is closing the file automaticly after opening. 
         inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
 
-    for i in inhalt: ## Löschen funktuniert nicht. Es geht nicht alle values durch. Compilen tun es. 
-        for val in i.values():
-            index += 1
-            if(val == input):
-                inhalt.remove(index)
-                print("Succesfully Removed Todo")
+    for i in inhalt: # i is the hole Todo Data key + value 
+        for val in i.values(): # val is only the values from the todos. 
+            if(input == val): # basic english
+                inhalt.remove(i) # removes the i which is the hole Todo index key + value
+                print("Succesfully Removed Todo") # info
+                with open(jf, "w") as f: 
+                    inhalt = json.dump(inhalt, f) # writes the changes in the file
                 return
-            else:
-                if(index >= len(inhalt)):    
-                    print("There is no Todo like this!?")
-                    return
-
-    return
+            else: # if there is no todo like the input
+                 if(index >= len(inhalt)-1): # checks for the index length just for going trough all the todos. inhalt -1 because inhalt lenth starts from 1 but index from 0. 
+                     print("There is no Todo like this!?") # if all the todos are seen print this info an return nothning. 
+                     return
+                 index += 1 # index = 0 --> index = 1 because first index was seen. 
 
 def hilfe(): # help function DONE!
     #Just listin the Usage forms. 
