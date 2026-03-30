@@ -6,7 +6,6 @@ argv = sys.argv
 argc = len(argv)
 args = ["add", "rm", "ls", "help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
 #status = False commented out because if a Todo is finished the user should delete it.
-
 def main():
     count = 0
     if(argc > 1 & argc < 3):
@@ -22,18 +21,26 @@ def main():
     else:
         hilfe()
         return
-
+    
 def arg(x):
-    if(x == args[0]):
-        if(argc != 3):
+    if(x == args[0]):# man kann ncoh nicht add -> mehr als ein wort machen. aber sonst funktuniert alles. es muss danach nur setup und test gemacht werden. 
+        if(argc > 2):
+            fakearr = []
+            for i in range(2, argc):
+                fakearr.append(argv[i])
+
+            userinput = " ".join(fakearr)
+            add(userinput)
+        else:
             print("Undefinded arg: Usage: main.py help")
             return
-        else:
-            userinput = argv[2]
-            add(userinput)
     elif(x == args[1]):
-        if(argc == 3):
-            userinput = argv[2]
+        if(argc > 2):
+            fakearr = []
+            for i in range(2, argc):
+                fakearr.append(argv[i])
+
+            userinput = " ".join(fakearr)
             rm(userinput)
         else:
             print("Undefinded arg: Usage: main.py help")
