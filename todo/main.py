@@ -4,7 +4,7 @@ import json
 
 argv = sys.argv 
 argc = len(argv)
-args = ["add {argv[2]}", "rm {argv[2]}", "ls", "help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
+args = ["add", "rm", "ls", "help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
 #status = False commented out because if a Todo is finished the user should delete it.
 
 def main():
@@ -23,13 +23,21 @@ def main():
         hilfe()
         return
 
-def arg(x): # must be changed but works fine rn
+def arg(x):
     if(x == args[0]):
-        userinput = argv[2]
-        add(userinput)
+        if(argc != 3):
+            print("Undefinded arg: Usage: main.py help")
+            return
+        else:
+            userinput = argv[2]
+            add(userinput)
     elif(x == args[1]):
-        userinput = argv[2] # shoud have a fallback if there is no todo that name exist at all
-        rm(userinput)
+        if(argc == 3):
+            userinput = argv[2]
+            rm(userinput)
+        else:
+            print("Undefinded arg: Usage: main.py help")
+            return
     elif(x == args[2]):
         ls()
     elif(x == args[3]):
@@ -52,6 +60,8 @@ def add(input):# add function DONE!
 
     with open(jf, "w") as f: 
         json.dump(inhalt, f) # its opening the json file and writing the changes into the file. 
+
+    print("Succesfully Added " + input) # info
 
     return
 
