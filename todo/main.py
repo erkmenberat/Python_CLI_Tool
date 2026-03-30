@@ -4,11 +4,11 @@ import json
 
 argv = sys.argv 
 argc = len(argv)
-args = ["add", "rm", "ls", "help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
+args = ["add", "rm", "ls", "--help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
 #status = False commented out because if a Todo is finished the user should delete it.
 def main():
     count = 0
-    if(argc > 1 & argc < 3):
+    if(argc > 1 & argc < 3): # no clue why this should work but it works :) dont touch it
         for i in args: 
             if(argv[1] == i):
                 arg(i)
