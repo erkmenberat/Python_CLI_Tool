@@ -171,19 +171,6 @@ def rm(userinput):
             
         return
         
-        
-
-def hilfe(): # help function DONE!
-    #Just listin the Usage forms. 
-    print("Usage Main.Py: [add, delete, list, help]\n\n")
-    print("These are the Commands that you can use: \n\n")
-    print("     add <todo name>    Adds Todos that you can Check here throug 'list'\n")
-    print("     ls     Lists all the Todos that you have written. \n")
-    print("     rm <todo name>     Deletes the Selected Todo.\n")
-    print("     help     Walkthrough for my very very Complex Commands.\n")
-    return
-
-
 def rmall():
         try:
             with open(jf, "r") as f:
@@ -194,7 +181,19 @@ def rmall():
             with open(jf, "w") as f: 
                    inhalt = json.dump(inhalt, f)
 
+            ls()
+
         except Exception as e: 
-            log_error(e)
+            log_error(e)        
+
+def hilfe(): # help function DONE!
+    #Just listin the Usage forms. 
+    print("Usage Main.Py: [add, delete, list, help]\n\n")
+    print("These are the Commands that you can use: \n\n")
+    print("     add <todo name>    Adds Todos that you can Check here throug 'list'\n")
+    print("     ls     Lists all the Todos that you have written. \n")
+    print("     rm <todo name>     Deletes the Selected Todo.\n")
+    print("     help     Walkthrough for my very very Complex Commands.\n")
+    return
 
 main()
