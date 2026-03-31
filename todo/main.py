@@ -1,11 +1,18 @@
 import sys
 from pathlib import Path
 import json 
+import traceback 
+import datetime
 
+date = str(datetime.datetime.now())
 argv = sys.argv 
 argc = len(argv)
 args = ["add", "rm", "ls", "--help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
 #status = False commented out because if a Todo is finished the user should delete it.
+
+logs = Path.home() / "logs.txt" #log file
+jf = Path.home() / "todos.json" #jf == json file
+
 def main():
     count = 0
     if(argc > 1 & argc < 3): # no clue why this should work but it works :) dont touch it
@@ -55,8 +62,6 @@ def arg(x):
 
 def add(input):# add function DONE!
 
-    jf = Path.home() / "todos.json" #jf == json file
-    
     if not jf.exists(): # check if the file is existing
         jf.write_text("[]") # if not create a empty file. 
 
@@ -75,27 +80,38 @@ def add(input):# add function DONE!
 def ls(): # List Function DONE!
     # Check how to Print a Json file on Terminal in Python? 
 
-    jf = Path.home() / "todos.json" #jf == json file
-    
-    if not jf.exists(): # check if the file is existing
-        jf.write_text("[]") # if not create a empty file.
-        print("No Database found! --> Created todo.json") #alerting
-    
-    with open(jf, "r") as f:  # using "with" for safety it is closing the file automaticly after opening. 
-        inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
+    try:
+        if not jf.exists(): # check if the file is existing
+            jf.write_text("[]") # if not create a empty file.
+            print("No Database found! --> Created todo.json") #alerting
+        
+        with open(jf, "r") as f:  # using "with" for safety it is closing the file automaticly after opening. 
+            inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
 
-    for i in inhalt: # inhalt [´{example1}, {example2}] i = {example1} --> {example2}.
-        for x, y in i.items(): # gets the key and the values thats .items() :) 
-            print(f"{x}: {y}") # prints out only the key and value ;) 
+        for i in inhalt: # inhalt [´{example1}, {example2}] i = {example1} --> {example2}.
+            for x, y in i.items(): # gets the key and the values thats .items() :) 
+                print(f"{x}: {y}") # prints out only the key and value ;) 
     
+    except json.JSONDecodeError:
+        print("Kaputte JSON Datei. --> " + str(jf) + " löschen und Programm neu Starten.") 
+        print("INFO: ToDos werden gelöscht!")       
+
+    except Exception as e:
+        if not logs.exists(): 
+            logs.write_text("Logs Created at: " + date + "\n\n")
+    
+        with open(logs, "a") as log: 
+            traceback.print_exc(file=log)
+            print("Fehler wurde geloggt.") 
+
+        print("Unbekannter Fehler: " + str(e) + " nur zu info Akhi. :/ ")
+         
     return
 
 def rm(input): # rm command DONE!
     # Check how to edit a JSON file using pyhton
     # use clear()
     index = 0 # for the loop index
-
-    jf = Path.home() / "todos.json" #jf == json file
     
     if not jf.exists(): # check if the file is existing
         jf.write_text("[]") # if not create a empty file.
