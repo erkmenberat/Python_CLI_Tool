@@ -84,7 +84,7 @@ def add(userinput):
                 with open(jf, "w") as f: 
                         json.dump(inhalt, f) # its opening the json file and writing the changes into the file. 
 
-                print("Succesfully Added " + userinput) # info
+                ls()
         
         except PermissionError:
                 print("Keine Berechtigung auf todos.json zuzugreifen!")
@@ -149,7 +149,7 @@ def rm(userinput):
                                 with open(jf, "w") as f: 
                                         inhalt = json.dump(inhalt, f) # writes the changes in the file
                                 
-                                print("Succesfully Removed Todo") # info
+                                ls()
 
                                 return
 
@@ -193,7 +193,7 @@ def rmall():
 
             with open(jf, "w") as f: 
                    inhalt = json.dump(inhalt, f)
-                   
+
         except Exception as e: 
             log_error(e)
 
