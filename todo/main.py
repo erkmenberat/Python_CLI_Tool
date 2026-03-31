@@ -65,6 +65,18 @@ def arg(x):
         print("Hepinizin Amina Koymak lazim ama neyse.")
         return
 
+
+def log_error(e):      
+        if not logs.exists(): 
+                logs.write_text("Logs Created at: " + date + "\n\n")
+        
+        with open(logs, "a") as log: 
+                traceback.print_exc(file=log)
+                print("Fehler wurde geloggt.") 
+
+                print("Unbekannter Fehler: " + str(e) + " nur zu info Akhi. :/ ")
+        return
+
 def add(userinput):
         try: 
                 if not jf.exists(): # check if the file is existing
@@ -80,19 +92,15 @@ def add(userinput):
 
                 print("Succesfully Added " + userinput) # info
         
+        except PermissionError:
+            print("Keine Berechtigung auf todos.json zuzugreifen!")
+        
         except json.JSONDecodeError:
                 print("Kaputte JSON Datei. --> " + str(jf) + " löschen und Programm neu Starten.") 
                 print("INFO: ToDos werden gelöscht!")       
 
         except Exception as e:
-                if not logs.exists(): 
-                        logs.write_text("Logs Created at: " + date + "\n\n")
-        
-                with open(logs, "a") as log: 
-                        traceback.print_exc(file=log)
-                        print("Fehler wurde geloggt.") 
-
-                print("Unbekannter Fehler: " + str(e) + " nur zu info Akhi. :/ ")
+                log_error(e)
             
         return 
 
@@ -108,20 +116,16 @@ def ls():
                 for i in inhalt: # inhalt [´{example1}, {example2}] i = {example1} --> {example2}.
                         for x, y in i.items(): # gets the key and the values thats .items() :) 
                             print(f"{x}: {y}") # prints out only the key and value ;) 
+
+        except PermissionError:
+            print("Keine Berechtigung auf todos.json zuzugreifen!")
         
         except json.JSONDecodeError:
                 print("Kaputte JSON Datei. --> " + str(jf) + " löschen und Programm neu Starten.") 
                 print("INFO: ToDos werden gelöscht!")       
 
         except Exception as e:
-                if not logs.exists(): 
-                        logs.write_text("Logs Created at: " + date + "\n\n")
-        
-                with open(logs, "a") as log: 
-                        traceback.print_exc(file=log)
-                        print("Fehler wurde geloggt.") 
-
-                print("Unbekannter Fehler: " + str(e) + " nur zu info Akhi. :/ ")
+                log_error(e)
             
         return
 
@@ -155,19 +159,15 @@ def rm(userinput):
                                         return
                                 index += 1
         
+        except PermissionError:
+            print("Keine Berechtigung auf todos.json zuzugreifen!")
+        
         except json.JSONDecodeError:
                 print("Kaputte JSON Datei. --> " + str(jf) + " löschen und Programm neu Starten.") 
                 print("INFO: ToDos werden gelöscht!")       
 
         except Exception as e:
-                if not logs.exists(): 
-                        logs.write_text("Logs Created at: " + date + "\n\n")
-        
-                with open(logs, "a") as log: 
-                        traceback.print_exc(file=log)
-                        print("Fehler wurde geloggt.") 
-
-                print("Unbekannter Fehler: " + str(e) + " nur zu info Akhi. :/ ")
+                log_error(e)
             
         return
         
