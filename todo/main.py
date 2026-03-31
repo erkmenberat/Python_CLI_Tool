@@ -1,14 +1,18 @@
 import sys
-from pathlib import Path
 import json 
 import traceback 
 import datetime
+import rich 
+from pathlib import Path
+from rich.console import Console
+from rich.table import Table
+from rich import print as printf
 
 date = str(datetime.datetime.now())
+table = Table(title="All Todos")
 argv = sys.argv 
 argc = len(argv)
-args = ["add", "rm", "ls", "--help"] ### args müssen richtig definded werden und sie funktunieren noch nicht als diese art von eingabe add [...] ls - 
-#status = False commented out because if a Todo is finished the user should delete it.
+args = ["add", "rm", "ls", "--help"]
 
 logs = Path.home() / "logs.txt" #log file
 jf = Path.home() / "todos.json" #jf == json file
@@ -32,14 +36,6 @@ def main():
 def arg(x):
     if(x == args[0]):# man kann ncoh nicht add -> mehr als ein wort machen. aber sonst funktuniert alles. es muss danach nur setup und test gemacht werden. 
         if(argc > 2):
-            
-            # fakearr = []
-            # for i in range(2, argc):
-            #     fakearr.append(argv[i])
-
-            # userinput = " ".join(fakearr)
-            # add(userinput)
-
             userinput = " ".join(argv[2:])  ## Better way to do that whats above. 
             add(userinput)
 
@@ -48,14 +44,11 @@ def arg(x):
             return
     elif(x == args[1]):
         if(argc > 2):
-            fakearr = []
-            for i in range(2, argc):
-                fakearr.append(argv[i])
-
-            userinput = " ".join(fakearr)
+            userinput = " ".join(argv[2:])  ## Better way to do that whats above. 
             rm(userinput)
+
         else:
-            print("Undefinded arg: Usage: main.py help")
+            rmall()
             return
     elif(x == args[2]):
         ls()
@@ -65,6 +58,7 @@ def arg(x):
         print("Hepinizin Amina Koymak lazim ama neyse.")
         return
 
+#def print_table():
 
 def log_error(e):      
         if not logs.exists(): 
@@ -93,7 +87,7 @@ def add(userinput):
                 print("Succesfully Added " + userinput) # info
         
         except PermissionError:
-            print("Keine Berechtigung auf todos.json zuzugreifen!")
+                print("Keine Berechtigung auf todos.json zuzugreifen!")
         
         except json.JSONDecodeError:
                 print("Kaputte JSON Datei. --> " + str(jf) + " löschen und Programm neu Starten.") 
@@ -106,6 +100,9 @@ def add(userinput):
 
 def ls():
         try:
+                table.add_column("Key")
+                table.add_column("Value")
+                
                 if not jf.exists(): # check if the file is existing
                         jf.write_text("[]") # if not create a empty file.
                         print("No Database found! --> Created todo.json") #alerting
@@ -114,11 +111,14 @@ def ls():
                         inhalt = json.load(f) # saving into inhalt the value of opened file -> todo.json
 
                 for i in inhalt: # inhalt [´{example1}, {example2}] i = {example1} --> {example2}.
-                        for x, y in i.items(): # gets the key and the values thats .items() :) 
-                            print(f"{x}: {y}") # prints out only the key and value ;) 
+                        for key, value in i.items(): # gets the key and the values thats .items() :) 
+                            table.add_row(f"{key}", f"{value}") # prints out only the key and value ;)
+
+                console = Console()
+                console.print(table)
 
         except PermissionError:
-            print("Keine Berechtigung auf todos.json zuzugreifen!")
+                print("Keine Berechtigung auf todos.json zuzugreifen!")
         
         except json.JSONDecodeError:
                 print("Kaputte JSON Datei. --> " + str(jf) + " löschen und Programm neu Starten.") 
@@ -160,7 +160,7 @@ def rm(userinput):
                                 index += 1
         
         except PermissionError:
-            print("Keine Berechtigung auf todos.json zuzugreifen!")
+                print("Keine Berechtigung auf todos.json zuzugreifen!")
         
         except json.JSONDecodeError:
                 print("Kaputte JSON Datei. --> " + str(jf) + " löschen und Programm neu Starten.") 
@@ -182,5 +182,19 @@ def hilfe(): # help function DONE!
     print("     rm <todo name>     Deletes the Selected Todo.\n")
     print("     help     Walkthrough for my very very Complex Commands.\n")
     return
+
+
+def rmall():
+        try:
+            with open(jf, "r") as f:
+                    inhalt = json.load(f)
+
+            inhalt.clear()
+
+            with open(jf, "w") as f: 
+                   inhalt = json.dump(inhalt, f)
+                   
+        except Exception as e: 
+            log_error(e)
 
 main()
