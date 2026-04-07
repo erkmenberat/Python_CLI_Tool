@@ -23,3 +23,12 @@ def test_file_checker(tmp_path):
     with open(file, "r") as f:
         inhalt = json.load(f)
     assert inhalt == []
+
+def test_file_loader(tmp_path):
+    path = tmp_path / "sub"
+    path.mkdir()
+    file = path / "test.json"
+    main.ensure_file(file)
+    file.write_text('["yarrak"]')
+    inhalt = main.load_todos(file)
+    assert  inhalt == ["yarrak"]
