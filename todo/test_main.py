@@ -32,3 +32,14 @@ def test_file_loader(tmp_path):
     file.write_text('["yarrak"]')
     inhalt = main.load_todos(file)
     assert  inhalt == ["yarrak"]
+
+def test_in_file_writer(tmp_path):
+    path = tmp_path / "sub"
+    path.mkdir()
+    file = path / "test.json"
+    main.ensure_file(file)
+    inhalt = ["yarrak"]
+    main.save_todos(file, inhalt)
+    result = main.load_todos(file)
+    assert  result == ["yarrak"]
+
