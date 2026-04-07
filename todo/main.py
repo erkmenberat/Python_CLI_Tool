@@ -17,15 +17,15 @@ jf   = Path.home() / "todos.json"  # jf == json file
 
 # ── File Helpers ──────────────────────────────────────────────────────────────
 
-def ensure_file(path):
+def ensure_file(path): #DONE
     if not path.exists():
         path.write_text("[]")
 
-def load_todos(path):
+def load_todos(path): #DONE
     with open(path, "r") as f:
         return json.load(f)
 
-def save_todos(path, inhalt):
+def save_todos(path, inhalt): #DONE
     with open(path, "w") as f:
         json.dump(inhalt, f)
 
@@ -37,11 +37,11 @@ def check_json():
 
 # ── Todo Logic ────────────────────────────────────────────────────────────────
 
-def todo_hinzufuegen(inhalt, userinput):
+def todo_hinzufuegen(inhalt, userinput): #DONE
     inhalt.append({"ToDo": userinput})
     return inhalt
 
-def todo_entfernen(inhalt, userinput):
+def todo_entfernen(inhalt, userinput): #DONE
     for i in inhalt:
         for val in i.values():
             if userinput == val:
@@ -64,10 +64,13 @@ def build_table(inhalt):
 
 # ── Error Logging ─────────────────────────────────────────────────────────────
 
-def log_error(e):
-    if not logs.exists():
-        logs.write_text("Logs Created at: " + date + "\n\n")
-    with open(logs, "a") as log:
+def ensure_logfile(logfile):
+    if not logfile.exists():
+        logfile.write_text("Logs Created at: " + date + "\n\n")
+
+def log_error(e, logfile):
+    ensure_logfile(logfile)
+    with open(logfile, "a") as log:
         traceback.print_exc(file=log)
         print("Fehler wurde geloggt.")
         print("Unbekannter Fehler: " + str(e) + " nur zu info Akhi. :/ ")
