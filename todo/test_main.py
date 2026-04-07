@@ -1,5 +1,8 @@
 import pytest
 import main
+import json
+
+CONTENT = "inhalt"
 
 def test_todo_hinzufuegen():
     inhalt = []
@@ -12,3 +15,11 @@ def test_todo_entfernen():
     inhalt, gefunden  = main.todo_entfernen(inhalt, 'val')
     assert len(inhalt) == 0 and gefunden == True
 
+def test_file_checker(tmp_path):
+    path = tmp_path / "sub"
+    path.mkdir()
+    file = path / "test.json"
+    main.ensure_file(file)
+    with open(file, "r") as f:
+        inhalt = json.load(f)
+    assert inhalt == []
