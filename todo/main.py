@@ -95,7 +95,7 @@ def add(userinput):
         print("INFO: ToDos werden gelöscht!")
 
     except Exception as e:
-        log_error(e)
+        log_error(e, logs)
 
     return
 
@@ -114,7 +114,7 @@ def ls():
         print("INFO: ToDos werden gelöscht!")
 
     except Exception as e:
-        log_error(e)
+        log_error(e, logs)
 
     return
 
@@ -138,7 +138,7 @@ def rm(userinput):
         print("INFO: ToDos werden gelöscht!")
 
     except Exception as e:
-        log_error(e)
+        log_error(e, logs)
 
     return
 
@@ -150,7 +150,7 @@ def rmall():
         ls()
 
     except Exception as e:
-        log_error(e)
+        log_error(e, logs)
 
 def hilfe():  # help function DONE!
     # Just listing the Usage forms.

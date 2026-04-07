@@ -2,8 +2,6 @@ import pytest
 import main
 import json
 
-CONTENT = "inhalt"
-
 def test_todo_hinzufuegen():
     inhalt = []
     inhalt = main.todo_hinzufuegen(inhalt, "Neue Todo!")
@@ -48,10 +46,7 @@ def test_ensure_logfile(tmp_path):
     path.mkdir()
     file = path / "logs.txt"
     main.ensure_logfile(file)
-    check = False
-    if file.exists():
-        check = True
-    assert check == True 
+    assert file.exists()
 
 def test_error_logger(tmp_path): 
     path = tmp_path / "sub"
@@ -64,12 +59,3 @@ def test_error_logger(tmp_path):
     with open(file, "r") as log:
         inhalt = log.read()
     assert "Fake error" in inhalt
-
-
-
-
-
-
-# def test_build_table():
-    
-#     assert 1 == 1
